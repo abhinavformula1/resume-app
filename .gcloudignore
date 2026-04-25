@@ -1,0 +1,8 @@
+node_modules/
+.env
+accounts.csv
+*.pdf
+cdc.js
+index.js
+package-lock.json
+package.json

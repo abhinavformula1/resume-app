@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abhinav Kumar — Senior Salesforce Application Engineer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-2: #222536;
+      --border: #2e3248;
+      --accent: #4f8ef7;
+      --accent-soft: #1e2d4f;
+      --text: #e8eaf2;
+      --text-secondary: #8b90a8;
+      --text-muted: #555870;
+      --success: #3ecf8e;
+      --tag-bg: #1e2d4f;
+      --tag-text: #7aadff;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .header-name {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .header-title {
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .meta-item svg { flex-shrink: 0; }
+
+    .exp-badge {
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 10px 20px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .exp-badge .years {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .exp-badge .label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 4px;
+    }
+
+    /* ── Two-column body ── */
+    .body {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── Section ── */
+    .section { margin-bottom: 32px; }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── About ── */
+    .about-text {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* ── Skills ── */
+    .skill-group { margin-bottom: 14px; }
+
+    .skill-group-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 11.5px;
+      font-weight: 500;
+      border: 1px solid #2b3d6b;
+    }
+
+    .tag.green {
+      background: #0d2b1f;
+      color: var(--success);
+      border-color: #1a4a33;
+    }
+
+    /* ── Education ── */
+    .edu-name { font-size: 13px; font-weight: 600; }
+    .edu-degree { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .edu-year { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── Certifications ── */
+    .cert-group { margin-bottom: 14px; }
+    .cert-group-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      line-height: 1.4;
+    }
+
+    .cert-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ── Experience ── */
+    .job { margin-bottom: 28px; }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .job-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .job-period {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .job-company {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .job-company .location {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .job-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .job-bullets li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .job-bullets li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ── Projects ── */
+    .project {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+
+    .project-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .project-tag {
+      display: inline-block;
+      background: #1e2d4f;
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+      border: 1px solid #2b3d6b;
+    }
+
+    /* ── Timeline connector ── */
+    .timeline {
+      position: relative;
+    }
+
+    .timeline .job:not(:last-child)::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 16px;
+      background: var(--border);
+      margin-left: 0;
+      margin-top: 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .body { grid-template-columns: 1fr; }
+      .header { grid-template-columns: 1fr; }
+      .exp-badge { justify-self: start; }
+      .header-name { font-size: 26px; }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      :root {
+        --bg: #fff; --surface: #f5f5f5; --surface-2: #eee;
+        --border: #ddd; --text: #111; --text-secondary: #444;
+        --text-muted: #888; --accent: #1a56db;
+        --tag-bg: #e8f0fe; --tag-text: #1a56db;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ── Header ── -->
+    <header class="header">
+      <div>
+        <div class="header-name">Abhinav Kumar</div>
+        <div class="header-title">Senior Salesforce Application Engineer</div>
+        <div class="header-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M16 2v4M8 2v4M4 10h16"/></svg>
+            <!-- email icon replaced with envelope -->
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            <a href="mailto:abhinavformula1@gmail.com">abhinavformula1@gmail.com</a>
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.8 19.8 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.8 12.8 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.8 12.8 0 0 0 2.81.7A2 2 0 0 1 21.5 16z"/></svg>
+            +91-9527506880
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <a href="https://linkedin.com/in/abhinavformula1" target="_blank">linkedin.com/in/abhinavformula1</a>
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Bengaluru, India
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <a href="https://trailblazer.me/id/abhinavformula1" target="_blank">Trailblazer Profile</a>
+          </span>
+        </div>
+      </div>
+      <div class="exp-badge">
+        <div class="years">12+</div>
+        <div class="label">Years Experience</div>
+      </div>
+    </header>
+
+    <!-- ── Body ── -->
+    <div class="body">
+
+      <!-- ── Left Column ── -->
+      <aside>
+
+        <!-- About -->
+        <div class="section">
+          <div class="section-title">About Me</div>
+          <p class="about-text">
+            Senior Salesforce Application Engineer with <strong style="color:var(--text)">12+ years of experience</strong> across Salesforce development, architecture, and DevOps, building scalable enterprise applications using Apex, Lightning Web Components, and API-driven integrations.
+          </p>
+          <br/>
+          <p class="about-text">
+            Experienced across Sales Cloud, Service Cloud, Experience Cloud, and Salesforce Communications Cloud, with deep expertise in CPQ, Contract Lifecycle Management, and Order Management.
+          </p>
+        </div>
+
+        <!-- Skills -->
+        <div class="section">
+          <div class="section-title">Skills</div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">Salesforce Core</div>
+            <div class="tags">
+              <span class="tag">Apex</span>
+              <span class="tag">LWC</span>
+              <span class="tag">Triggers</span>
+              <span class="tag">Flows</span>
+              <span class="tag">Platform Events</span>
+              <span class="tag">SOQL</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">Salesforce Industries</div>
+            <div class="tags">
+              <span class="tag">Communications Cloud</span>
+              <span class="tag">EPC</span>
+              <span class="tag">OmniScripts</span>
+              <span class="tag">FlexCards</span>
+              <span class="tag">DataRaptors</span>
+              <span class="tag">Integration Procedures</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">CPQ & CLM</div>
+            <div class="tags">
+              <span class="tag">Conga CPQ</span>
+              <span class="tag">Conga CLM</span>
+              <span class="tag">Product Config</span>
+              <span class="tag">Pricing</span>
+              <span class="tag">X-Author</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">Integration</div>
+            <div class="tags">
+              <span class="tag">REST APIs</span>
+              <span class="tag">Event-driven Arch</span>
+              <span class="tag">Apex REST</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">DevOps & Tools</div>
+            <div class="tags">
+              <span class="tag green">Copado</span>
+              <span class="tag green">GitHub Actions</span>
+              <span class="tag green">Jenkins</span>
+              <span class="tag green">Cursor AI</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-label">Data Migration</div>
+            <div class="tags">
+              <span class="tag">Data Loader</span>
+              <span class="tag">Talend Open Studio</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="section">
+          <div class="section-title">Education</div>
+          <div class="edu-name">Medicaps Institute of Technology &amp; Management</div>
+          <div class="edu-degree">Bachelor of Engineering (B.E.)</div>
+          <div class="edu-degree">Indore, Madhya Pradesh</div>
+          <div class="edu-year">Graduated 2012</div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="section">
+          <div class="section-title">Certifications</div>
+
+          <div class="cert-group">
+            <div class="cert-group-title">Architecture</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Application Architect</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Platform Integration Architect</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Platform Data Architect</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Platform Sharing &amp; Visibility Architect</div>
+          </div>
+
+          <div class="cert-group">
+            <div class="cert-group-title">Development & Cloud</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Platform Developer I</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified JavaScript Developer</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Experience Cloud Consultant</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Sales Cloud Consultant</div>
+          </div>
+
+          <div class="cert-group">
+            <div class="cert-group-title">Industries & CPQ</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified Industries CPQ Developer</div>
+            <div class="cert-item"><span class="cert-dot"></span>Salesforce Certified OmniStudio Developer</div>
+            <div class="cert-item"><span class="cert-dot"></span>Conga CPQ 202 | Conga CLM 201</div>
+          </div>
+
+          <div class="cert-group">
+            <div class="cert-group-title">DevOps</div>
+            <div class="cert-item"><span class="cert-dot"></span>Copado Certified Consultant</div>
+            <div class="cert-item"><span class="cert-dot"></span>Copado Certified Fundamentals I &amp; II</div>
+          </div>
+
+          <div class="cert-group">
+            <div class="cert-group-title">Anthropic</div>
+            <div class="cert-item"><span class="cert-dot"></span>Claude Code in Action</div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ── Right Column ── -->
+      <main>
+
+        <!-- Work Experience -->
+        <div class="section">
+          <div class="section-title">Work Experience</div>
+          <div class="timeline">
+
+            <div class="job">
+              <div class="job-header">
+                <div class="job-title">Senior Technical Consultant</div>
+                <div class="job-period">June 2022 – Present</div>
+              </div>
+              <div class="job-company">Salesforce <span class="location">· India</span></div>
+              <ul class="job-bullets">
+                <li>Designed and developed scalable Salesforce applications using Apex, LWC, Flows, and event-driven automation to support enterprise customer service workflows.</li>
+                <li>Implemented Salesforce Industries (Communications Cloud) solutions across CPQ and Order Management, designing order decomposition and orchestration flows integrated with external billing systems.</li>
+                <li>Developed and supported Experience Cloud portals with custom components, access models, and performance optimizations.</li>
+                <li>Built and maintained API-driven integrations using REST services and Platform Events for reliable communication between Salesforce and downstream systems.</li>
+                <li>Leveraged AI-assisted development tools (Cursor) to accelerate development cycles, improve code quality, and reduce implementation time.</li>
+              </ul>
+            </div>
+
+            <div class="job">
+              <div class="job-header">
+                <div class="job-title">Senior Salesforce / Apttus Developer</div>
+                <div class="job-period">Apr 2017 – June 2022</div>
+              </div>
+              <div class="job-company">Tata Consultancy Services (TCS) <span class="location">· India, Malaysia</span></div>
+              <ul class="job-bullets">
+                <li>Designed and implemented enterprise CPQ and CLM solutions using Conga (Apttus), consolidating multiple legacy back-office systems for product sales, pricing, billing, and contract management.</li>
+                <li>Architected product configuration and pricing models supporting complex bundle structures, multi-currency pricing, approval workflows, and automated deal guidance.</li>
+                <li>Developed scalable customizations using Apex, LWC, and asynchronous Apex (Batch, Queueable, Scheduled) to support high-volume business operations.</li>
+                <li>Managed CI/CD processes using Bitbucket and Jenkins, supporting code reviews, pull requests, and controlled deployments across environments.</li>
+                <li>Led product, approval, and template migrations using X-Author tools and Talend-based data integration workflows ensuring data consistency.</li>
+              </ul>
+            </div>
+
+            <div class="job">
+              <div class="job-header">
+                <div class="job-title">Software Engineer</div>
+                <div class="job-period">May 2016 – Apr 2017</div>
+              </div>
+              <div class="job-company">Cognizant <span class="location">· India</span></div>
+              <ul class="job-bullets">
+                <li>Developed Salesforce-based onboarding solutions integrating capture, decisioning, and fulfillment workflows for banking onboarding processes.</li>
+                <li>Built API-based integrations between Salesforce and downstream banking systems enabling seamless data exchange across onboarding and servicing platforms.</li>
+              </ul>
+            </div>
+
+            <div class="job">
+              <div class="job-header">
+                <div class="job-title">Software Engineer</div>
+                <div class="job-period">July 2013 – Apr 2016</div>
+              </div>
+              <div class="job-company">Mindtree <span class="location">· India</span></div>
+              <ul class="job-bullets">
+                <li>Developed and enhanced Salesforce CRM solutions supporting customer service workflows for game purchase and support-related inquiries.</li>
+                <li>Implemented automation and customizations using Apex, Visualforce, and workflow automation to improve case management efficiency.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="section">
+          <div class="section-title">Key Projects</div>
+
+          <div class="project">
+            <div class="project-tag">Communications Cloud · OM</div>
+            <div class="project-title">PLDT — Order Management</div>
+            <ul class="job-bullets">
+              <li>Designed order orchestration and decomposition workflows using Salesforce Industries Order Management to manage product packaging and order processing.</li>
+              <li>Designed and implemented integrations between Salesforce OM and external billing systems, enabling automated technical product processing and downstream fulfillment.</li>
+              <li>Developed orchestration logic supporting end-to-end order lifecycle processing through API-based integrations.</li>
+            </ul>
+          </div>
+
+          <div class="project">
+            <div class="project-tag">Communications Cloud · CPQ</div>
+            <div class="project-title">T-Mobile — CPQ &amp; Contract Lifecycle</div>
+            <ul class="job-bullets">
+              <li>Implemented CPQ and contract lifecycle workflows using Salesforce Industries CPQ, enabling automated contract generation and eSignature processing.</li>
+              <li>Configured document templates and data mappings using OmniStudio Integration Procedures and DataRaptors to support contract automation.</li>
+              <li>Supported deployment and release activities using Copado across multiple environments.</li>
+            </ul>
+          </div>
+
+          <div class="project">
+            <div class="project-tag">Communications Cloud · CPQ</div>
+            <div class="project-title">Vodafone — Communications Cloud CPQ</div>
+            <ul class="job-bullets">
+              <li>Developed quoting workflows using OmniScripts, FlexCards, DataRaptors, and Integration Procedures within Salesforce Industries CPQ.</li>
+              <li>Implemented multi-language support using Translation Workbench for global users.</li>
+              <li>Managed product configuration deployments using IDX tools ensuring consistency across environments.</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
