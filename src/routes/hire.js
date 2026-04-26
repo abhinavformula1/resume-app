@@ -55,13 +55,21 @@ router.post('/hire', hireLimiter, validateHire, async (req, res, next) => {
   ].filter(Boolean).join('\n');
 
   try {
-    // 2. Create Salesforce record
-    const { id } = await salesforce.createInquiry({ name, email, company, notes });
+    // 2. Create Salesforce record (skip gracefully if SF not configured yet)
+    const sfConfigured = !!(process.env.SF_CLIENT_ID && process.env.SF_USERNAME && process.env.SF_PRIVATE_KEY);
+
+    let recordId = null;
+    if (sfConfigured) {
+      const result = await salesforce.createInquiry({ name, email, company, notes });
+      recordId = result.id;
+    } else {
+      console.log('[hire] Salesforce not configured — logging inquiry:', { name, email, company, notes });
+    }
 
     return res.status(200).json({
       success:  true,
       message:  'Inquiry submitted successfully.',
-      recordId: id,
+      recordId,
     });
   } catch (err) {
     // 3. Pass to global error handler

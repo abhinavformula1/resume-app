@@ -363,8 +363,18 @@
           '<div class="ga-summary-row"><span>Urgency</span><strong>' + escHtml(a.urgency) + '</strong></div>' +
           '<div class="ga-summary-row"><span>Slot</span><strong>' + escHtml(a.slot) + '</strong></div>';
 
+        var summaryBtn = document.createElement('button');
+        summaryBtn.className = 'ga-summary-btn';
+        summaryBtn.textContent = 'Get AI Summary';
+        summaryBtn.onclick = function () { requestSummary(summaryBtn); };
+
+        var summaryOut = document.createElement('div');
+        summaryOut.className = 'ga-summary-out';
+        summaryOut.id = 'gaSummaryOut';
+
         var confirmBtn = document.createElement('button');
         confirmBtn.className = 'ga-send-btn';
+        confirmBtn.style.marginTop = '4px';
         confirmBtn.textContent = t().confirmBtn;
         confirmBtn.onclick = function () { submitAssistant(confirmBtn); };
 
@@ -373,6 +383,8 @@
         errDiv.id = 'gaSubmitErr';
 
         area.appendChild(summary);
+        area.appendChild(summaryBtn);
+        area.appendChild(summaryOut);
         area.appendChild(confirmBtn);
         area.appendChild(errDiv);
       }
@@ -435,7 +447,7 @@
         var summaryBtn = document.createElement('button');
         summaryBtn.className = 'ga-summary-btn';
         summaryBtn.textContent = 'Get AI Summary';
-        summaryBtn.onclick = function () { requestSummary(summaryBtn, done); };
+        summaryBtn.onclick = function () { requestSummary(summaryBtn); };
 
         var summaryOut = document.createElement('div');
         summaryOut.className = 'ga-summary-out';
@@ -456,7 +468,7 @@
     );
   }
 
-  async function requestSummary(btn, done) {
+  async function requestSummary(btn) {
     btn.disabled = true;
     btn.textContent = 'Generating\u2026';
     var out = document.getElementById('gaSummaryOut');
@@ -493,7 +505,7 @@
         out.className = 'ga-summary-out ga-summary-err';
         btn.textContent = 'Retry';
         btn.disabled = false;
-        btn.onclick = function () { requestSummary(btn, done); };
+        btn.onclick = function () { requestSummary(btn); };
       }
     } catch (_) {
       out.textContent = 'Network error. Please try again.';
