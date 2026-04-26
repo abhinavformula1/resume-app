@@ -25,6 +25,18 @@
       state.answers.name  = payload.name;
       state.answers.email = payload.email;
       state.showGoogleStep = false;
+
+      // Swap avatar to Google profile picture
+      var avatar = document.querySelector('.ga-avatar');
+      if (avatar && payload.picture) {
+        avatar.innerHTML = '<img src="' + payload.picture + '" alt="' + payload.name + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+        avatar.style.background = 'none';
+        avatar.style.padding = '0';
+      }
+      // Update header name to show who is signed in
+      var headerName = document.querySelector('.ga-header-name');
+      if (headerName) headerName.textContent = payload.name.split(' ')[0] + "'s session";
+
       // Skip name + email steps — jump straight to company (step 2)
       state.step = 2;
       document.getElementById('gaMessages').innerHTML = '';
@@ -263,6 +275,11 @@
     state.answers  = { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' };
     state.googleProfile  = null;
     state.showGoogleStep = !!(GOOGLE_CLIENT_ID && window.google);
+    // Reset avatar and header
+    var avatar = document.querySelector('.ga-avatar');
+    if (avatar) { avatar.innerHTML = 'AK'; avatar.style.background = ''; avatar.style.padding = ''; }
+    var headerName = document.querySelector('.ga-header-name');
+    if (headerName) headerName.textContent = "Abhinav's Assistant";
     document.getElementById('gaMessages').innerHTML = '';
     document.getElementById('assistantOverlay').removeAttribute('hidden');
     hideTeaser();
