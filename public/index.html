@@ -7,6 +7,18 @@
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
+  <!-- ── Top bar ── -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <span class="topbar-label">Language</span>
+      <div class="lang-toggle">
+        <button class="lang-btn lang-active" id="langEN" onclick="setLang('en')">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" id="langFR" onclick="setLang('fr')">FR</button>
+      </div>
+    </div>
+  </div>
+
   <div class="page">
 
     <!-- ── Header ── -->
@@ -38,7 +50,7 @@
             <a href="https://trailblazer.me/id/abhinavformula1" target="_blank">Trailblazer Profile</a>
           </span>
         </div>
-        <button class="hire-me-btn" onclick="openAssistant()">
+        <button class="hire-me-btn" onclick="document.getElementById('hireMeOverlay').removeAttribute('hidden')">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           Get In Touch
         </button>
