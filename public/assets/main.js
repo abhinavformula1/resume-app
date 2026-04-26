@@ -6,7 +6,7 @@
      GCP Console → APIs & Services → Credentials.
      Leave empty ('') to skip the Google sign-in pre-step.
   ─────────────────────────────────────────────────────────── */
-  var GOOGLE_CLIENT_ID = '';
+  var GOOGLE_CLIENT_ID = '647206478056-rd95imm61c309o4tc5ekddgkmk50fdvp.apps.googleusercontent.com';
 
   function initGoogleSignIn() {
     if (!GOOGLE_CLIENT_ID || !window.google) return;
