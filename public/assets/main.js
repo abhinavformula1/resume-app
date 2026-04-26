@@ -1,6 +1,42 @@
 (function () {
   'use strict';
 
+  /* ── Google Sign-In ──────────────────────────────────────────
+     Paste your OAuth 2.0 Client ID here after creating it in
+     GCP Console → APIs & Services → Credentials.
+     Leave empty ('') to skip the Google sign-in pre-step.
+  ─────────────────────────────────────────────────────────── */
+  var GOOGLE_CLIENT_ID = '647206478056-rd95imm61c309o4tc5ekddgkmk50fdvp.apps.googleusercontent.com';
+
+  function initGoogleSignIn() {
+    if (!GOOGLE_CLIENT_ID || !window.google) return;
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleSignIn,
+      auto_select: false,
+      cancel_on_tap_outside: false,
+    });
+  }
+
+  function handleGoogleSignIn(response) {
+    try {
+      var payload = JSON.parse(atob(response.credential.split('.')[1]));
+      state.googleProfile = { name: payload.name, email: payload.email, picture: payload.picture };
+      state.answers.name  = payload.name;
+      state.answers.email = payload.email;
+      state.showGoogleStep = false;
+      // Skip name + email steps — jump straight to company (step 2)
+      state.step = 2;
+      document.getElementById('gaMessages').innerHTML = '';
+      var first = payload.name.split(' ')[0];
+      addBotMessage('Welcome, ' + first + '! I have your details from Google. Just a few more questions.');
+      renderStep();
+    } catch (e) {
+      state.showGoogleStep = false;
+      renderStep();
+    }
+  }
+
   /* ═══════════════════════════════════════════════════════════
      GUIDED ASSISTANT — state machine
   ═══════════════════════════════════════════════════════════ */
@@ -18,6 +54,9 @@
   var state = {
     step: 0,
     answers: { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' },
+    googleProfile: null,
+    showGoogleStep: false,
+    minimised: false,
   };
 
   var STEPS = [
@@ -163,6 +202,16 @@
   /* ── Chat Launcher ── */
   var teaserShown = false;
 
+  // Init Google Sign-In once the GIS library has loaded
+  if (GOOGLE_CLIENT_ID) {
+    var _gsiPoll = setInterval(function () {
+      if (window.google && window.google.accounts) {
+        clearInterval(_gsiPoll);
+        initGoogleSignIn();
+      }
+    }, 200);
+  }
+
   setTimeout(function () {
     var launcher = document.getElementById('chatLauncher');
     launcher.removeAttribute('hidden');
@@ -211,7 +260,9 @@
 
   function openAssistant() {
     state.step = 0;
-    state.answers = { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' };
+    state.answers  = { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' };
+    state.googleProfile  = null;
+    state.showGoogleStep = !!(GOOGLE_CLIENT_ID && window.google);
     document.getElementById('gaMessages').innerHTML = '';
     document.getElementById('assistantOverlay').removeAttribute('hidden');
     hideTeaser();
@@ -255,7 +306,50 @@
     document.getElementById('gaProgressBar').style.width = pct + '%';
   }
 
+  function renderGoogleStep() {
+    var area = document.getElementById('gaInputArea');
+    area.innerHTML = '';
+
+    addBotMessage("Hi! To save time, you can sign in with Google — I'll auto-fill your name and email. Or continue as a guest and I'll ask you a couple of questions.");
+
+    var wrap = document.createElement('div');
+    wrap.className = 'ga-google-step';
+
+    var googleBtnDiv = document.createElement('div');
+    googleBtnDiv.id = 'googleSignInBtn';
+    googleBtnDiv.className = 'ga-google-btn-wrap';
+
+    var sep = document.createElement('div');
+    sep.className = 'ga-google-sep';
+    sep.textContent = 'or';
+
+    var guestBtn = document.createElement('button');
+    guestBtn.className = 'ga-guest-btn';
+    guestBtn.textContent = 'Continue as Guest';
+    guestBtn.onclick = function () {
+      state.showGoogleStep = false;
+      document.getElementById('gaMessages').innerHTML = '';
+      renderStep();
+    };
+
+    wrap.appendChild(googleBtnDiv);
+    wrap.appendChild(sep);
+    wrap.appendChild(guestBtn);
+    area.appendChild(wrap);
+
+    if (window.google && window.google.accounts && GOOGLE_CLIENT_ID) {
+      google.accounts.id.renderButton(googleBtnDiv, {
+        theme: 'filled_black',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'rectangular',
+        width: 260,
+      });
+    }
+  }
+
   function renderStep() {
+    if (state.showGoogleStep) { renderGoogleStep(); return; }
     updateProgress();
     if (state.step >= STEPS.length) { renderConfirm(); return; }
     var stepDef = STEPS[state.step];
