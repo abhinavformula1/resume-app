@@ -35,7 +35,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 16px;
 }
 .topbar-label {
   font-size: 11px;
@@ -45,7 +45,6 @@ body {
 }
 .topbar-user {
   position: relative;
-  margin-left: auto;
 }
 .topbar-user[hidden] { display: none; }
 .topbar-avatar-btn {
