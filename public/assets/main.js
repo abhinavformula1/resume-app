@@ -516,10 +516,47 @@
   window.openAssistant = openAssistant;
 
   function closeAssistant() {
-    state.minimised = false;
-    document.getElementById('assistantOverlay').setAttribute('hidden', '');
+    // Mid-conversation — ask for confirmation
+    if (state.step > 0 && state.step < STEPS.length) {
+      showCloseConfirm();
+      return;
+    }
+    forceCloseAssistant();
   }
   window.closeAssistant = closeAssistant;
+
+  function forceCloseAssistant() {
+    state.minimised = false;
+    document.getElementById('assistantOverlay').setAttribute('hidden', '');
+    // Remove confirm dialog if present
+    var existing = document.getElementById('gaCloseConfirm');
+    if (existing) existing.remove();
+  }
+
+  function showCloseConfirm() {
+    // Don't stack multiple dialogs
+    if (document.getElementById('gaCloseConfirm')) return;
+
+    var dialog = document.createElement('div');
+    dialog.id = 'gaCloseConfirm';
+    dialog.className = 'ga-close-confirm';
+    dialog.innerHTML =
+      '<p class="ga-confirm-msg">End this conversation? Your progress will be lost.</p>' +
+      '<div class="ga-confirm-btns">' +
+        '<button class="ga-confirm-stay">Keep chatting</button>' +
+        '<button class="ga-confirm-end">End conversation</button>' +
+      '</div>';
+
+    dialog.querySelector('.ga-confirm-stay').onclick = function () {
+      dialog.remove();
+    };
+    dialog.querySelector('.ga-confirm-end').onclick = function () {
+      dialog.remove();
+      forceCloseAssistant();
+    };
+
+    document.querySelector('.ga-modal').appendChild(dialog);
+  }
 
   function minimiseAssistant() {
     state.minimised = true;
@@ -540,10 +577,6 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeAssistant();
-  });
-
-  document.getElementById('assistantOverlay').addEventListener('click', function (e) {
-    if (e.target === this) closeAssistant();
   });
 
   function updateProgress() {

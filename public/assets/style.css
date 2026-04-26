@@ -1114,6 +1114,55 @@ a:hover { text-decoration: underline; }
   line-height: 1.5;
 }
 
+/* ── Close confirmation dialog ───────────────────────────────── */
+.ga-close-confirm {
+  position: absolute;
+  bottom: 80px;
+  left: 12px;
+  right: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  z-index: 100;
+  animation: teaserIn 0.18s ease;
+}
+.ga-confirm-msg {
+  font-size: 13px;
+  color: var(--text);
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+.ga-confirm-btns {
+  display: flex;
+  gap: 8px;
+}
+.ga-confirm-stay {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.ga-confirm-stay:hover { border-color: var(--accent); color: var(--accent); }
+.ga-confirm-end {
+  flex: 1;
+  background: #7f1d1d;
+  border: 1px solid #991b1b;
+  color: #fca5a5;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ga-confirm-end:hover { background: #991b1b; }
+
 /* ── Resize handle ───────────────────────────────────────────── */
 .ga-resize-handle {
   position: absolute;
