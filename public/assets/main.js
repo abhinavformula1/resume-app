@@ -147,8 +147,16 @@
     currentLang = lang;
     document.getElementById('langEN').classList.toggle('lang-active', lang === 'en');
     document.getElementById('langFR').classList.toggle('lang-active', lang === 'fr');
-    document.querySelector('.chat-teaser-text').textContent = t().teaserText;
-    document.querySelector('.chat-teaser-cta').textContent = t().teaserCta;
+    // Update teaser bubble text
+    var teaserText = document.querySelector('.chat-teaser-text');
+    var teaserCta  = document.querySelector('.chat-teaser-cta');
+    if (teaserText) teaserText.textContent = t().teaserText;
+    if (teaserCta)  teaserCta.textContent  = t().teaserCta;
+    // If assistant is open, restart it in the new language
+    var overlay = document.getElementById('assistantOverlay');
+    if (!overlay.hasAttribute('hidden')) {
+      openAssistant();
+    }
   }
   window.setLang = setLang;
 
@@ -202,7 +210,6 @@
     state.answers = { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' };
     document.getElementById('gaMessages').innerHTML = '';
     document.getElementById('assistantOverlay').removeAttribute('hidden');
-    document.body.style.overflow = 'hidden';
     hideTeaser();
     renderStep();
   }
@@ -210,9 +217,19 @@
 
   function closeAssistant() {
     document.getElementById('assistantOverlay').setAttribute('hidden', '');
-    document.body.style.overflow = '';
   }
   window.closeAssistant = closeAssistant;
+
+  function minimiseAssistant() {
+    document.getElementById('assistantOverlay').setAttribute('hidden', '');
+    // Show FAB so user can reopen
+    var launcher = document.getElementById('chatLauncher');
+    launcher.removeAttribute('hidden');
+    // Switch FAB back to chat icon
+    document.querySelector('.chat-fab-icon-open').style.display = '';
+    document.querySelector('.chat-fab-icon-close').style.display = 'none';
+  }
+  window.minimiseAssistant = minimiseAssistant;
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeAssistant();

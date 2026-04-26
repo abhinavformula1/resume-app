@@ -620,24 +620,25 @@ a:hover { text-decoration: underline; }
 
 .ga-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 9999;
-}
-.ga-overlay[hidden] { display: none; }
-
-.ga-modal {
-  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: 380px;
   max-width: 100vw;
+  z-index: 9999;
+  pointer-events: none;
+}
+.ga-overlay[hidden] { display: none; }
+
+.ga-modal {
+  position: absolute;
+  inset: 0;
   background: #131720;
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  pointer-events: auto;
   animation: slideInRight 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -693,20 +694,26 @@ a:hover { text-decoration: underline; }
   display: inline-block;
 }
 
-.ga-close {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+.ga-header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.ga-header-btn {
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
   line-height: 1;
-  padding: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
 }
-.ga-close:hover { color: var(--text); }
+.ga-header-btn:hover { color: var(--text); background: var(--surface-2); }
+.ga-close { font-size: 22px; }
 
 /* Progress */
 .ga-progress-track {
