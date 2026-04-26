@@ -1,4 +1,15 @@
-FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies first (layer cache — only re-runs when package files change)
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copy application source
+COPY . .
+
+# Cloud Run injects PORT; default to 8080
 EXPOSE 8080
-CMD sed -i 's/listen       80;/listen       8080;/' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+
+CMD ["node", "server.js"]
