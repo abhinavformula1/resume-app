@@ -191,6 +191,10 @@
   }
 
   function toggleChatTeaser() {
+    if (state.minimised) {
+      resumeAssistant();
+      return;
+    }
     var teaser = document.getElementById('chatTeaser');
     if (teaser.hasAttribute('hidden')) {
       showTeaser();
@@ -216,20 +220,27 @@
   window.openAssistant = openAssistant;
 
   function closeAssistant() {
+    state.minimised = false;
     document.getElementById('assistantOverlay').setAttribute('hidden', '');
   }
   window.closeAssistant = closeAssistant;
 
   function minimiseAssistant() {
+    state.minimised = true;
     document.getElementById('assistantOverlay').setAttribute('hidden', '');
-    // Show FAB so user can reopen
     var launcher = document.getElementById('chatLauncher');
     launcher.removeAttribute('hidden');
-    // Switch FAB back to chat icon
     document.querySelector('.chat-fab-icon-open').style.display = '';
     document.querySelector('.chat-fab-icon-close').style.display = 'none';
   }
   window.minimiseAssistant = minimiseAssistant;
+
+  function resumeAssistant() {
+    state.minimised = false;
+    document.getElementById('assistantOverlay').removeAttribute('hidden');
+    hideTeaser();
+  }
+  window.resumeAssistant = resumeAssistant;
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeAssistant();
