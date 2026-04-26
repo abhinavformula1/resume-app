@@ -1,0 +1,465 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface-2: #222536;
+  --border: #2e3248;
+  --accent: #4f8ef7;
+  --accent-soft: #1e2d4f;
+  --text: #e8eaf2;
+  --text-secondary: #8b90a8;
+  --text-muted: #555870;
+  --success: #3ecf8e;
+  --tag-bg: #1e2d4f;
+  --tag-text: #7aadff;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ── */
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── Header ── */
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.header-name {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.header-title {
+  font-size: 16px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.meta-item svg { flex-shrink: 0; }
+
+.exp-badge {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 10px 20px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.exp-badge .years {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.exp-badge .label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+}
+
+/* ── Hire Me Button (from Figma: #0070D2) ── */
+.hire-me-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: #0070D2;
+  color: #FFFFFF;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.hire-me-btn:hover { background: #005fb2; }
+
+/* ── Modal Overlay (from Figma: #000000 at 60% opacity) ── */
+.hm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+.hm-overlay[hidden] { display: none; }
+
+/* ── Modal Card (from Figma: 480×600, #1C2333, radius 12px) ── */
+.hm-modal {
+  background: #1C2333;
+  border-radius: 12px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ── Close button ── */
+.hm-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #7A8A9E;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+.hm-close:hover { color: #E8EAF0; }
+
+/* ── Title (from Figma: Inter Bold 20px, #E8EAF0) ── */
+.hm-title {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #E8EAF0;
+  margin: 0 0 8px;
+}
+
+/* ── Subtitle (from Figma: Inter Bold 13px, #7A8A9E) ── */
+.hm-subtitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7A8A9E;
+  margin: 0 0 24px;
+}
+
+/* ── Field wrapper ── */
+.hm-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+.hm-field label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #C0CDD8;
+}
+.hm-field label span { color: #E05252; }
+
+/* ── Inputs (from Figma: 416×40, #111827, stroke #2E3A50 1px) ── */
+.hm-field input,
+.hm-field textarea {
+  width: 100%;
+  height: 40px;
+  background: #111827;
+  border: 1px solid #2E3A50;
+  border-radius: 6px;
+  padding: 0 12px;
+  color: #E8EAF0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  transition: border-color 0.15s;
+}
+.hm-field textarea { height: 80px; padding: 10px 12px; resize: none; }
+.hm-field input:focus,
+.hm-field textarea:focus { outline: none; border-color: #0070D2; }
+.hm-field input.hm-err { border-color: #E05252; }
+
+.hm-error { font-size: 11px; color: #E05252; min-height: 14px; }
+
+/* ── Privacy notice ── */
+.hm-privacy {
+  font-size: 11px;
+  color: #7A8A9E;
+  margin: 4px 0 16px;
+  line-height: 1.5;
+}
+
+/* ── Send Message button (from Figma: 416×44, #0070D2, radius 6px, Inter Bold 13px) ── */
+.hm-submit {
+  width: 100%;
+  height: 44px;
+  background: #0070D2;
+  color: #FFFFFF;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.hm-submit:hover:not(:disabled) { background: #005fb2; }
+.hm-submit:disabled { background: #2E3A50; color: #7A8A9E; cursor: not-allowed; }
+
+/* ── Success + Global Error ── */
+.hm-success { text-align: center; padding: 24px 0; color: #4CAF8A; font-size: 15px; font-weight: 600; }
+.hm-global-error {
+  background: rgba(224, 82, 82, 0.1);
+  border: 1px solid #E05252;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #E05252;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+/* ── Two-column body ── */
+.body {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ── Section ── */
+.section { margin-bottom: 32px; }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── About ── */
+.about-text {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* ── Skills ── */
+.skill-group { margin-bottom: 14px; }
+
+.skill-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border: 1px solid #2b3d6b;
+}
+
+.tag.green {
+  background: #0d2b1f;
+  color: var(--success);
+  border-color: #1a4a33;
+}
+
+/* ── Education ── */
+.edu-name { font-size: 13px; font-weight: 600; }
+.edu-degree { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.edu-year { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ── Certifications ── */
+.cert-group { margin-bottom: 14px; }
+.cert-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+
+.cert-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.cert-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ── Experience ── */
+.job { margin-bottom: 28px; }
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.job-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.job-period {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.job-company {
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.job-company .location {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.job-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.job-bullets li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.55;
+}
+
+.job-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ── Projects ── */
+.project {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.project-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.project-tag {
+  display: inline-block;
+  background: #1e2d4f;
+  color: var(--accent);
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 8px;
+  border: 1px solid #2b3d6b;
+}
+
+/* ── Timeline connector ── */
+.timeline {
+  position: relative;
+}
+
+.timeline .job:not(:last-child)::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+  margin-left: 0;
+  margin-top: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .body { grid-template-columns: 1fr; }
+  .header { grid-template-columns: 1fr; }
+  .exp-badge { justify-self: start; }
+  .header-name { font-size: 26px; }
+}
+
+@media print {
+  body { background: #fff; color: #111; }
+  :root {
+    --bg: #fff; --surface: #f5f5f5; --surface-2: #eee;
+    --border: #ddd; --text: #111; --text-secondary: #444;
+    --text-muted: #888; --accent: #1a56db;
+    --tag-bg: #e8f0fe; --tag-text: #1a56db;
+  }
+}

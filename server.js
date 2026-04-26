@@ -1,0 +1,41 @@
+'use strict';
+
+// Load .env in development (no-op in production — Cloud Run injects env vars directly)
+require('dotenv').config();
+
+const express      = require('express');
+const path         = require('path');
+const config       = require('./src/config');
+const hireRoute    = require('./src/routes/hire');
+const { errorHandler } = require('./src/middleware/errorHandler');
+
+const app  = express();
+const PORT = config.server.port;
+
+// ── Request parsing ───────────────────────────────────────────────────────────
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// ── Static assets (everything in public/ is served automatically) ─────────────
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ── Health check (Cloud Run / Kubernetes liveness probe) ──────────────────────
+app.get('/health', (_req, res) => {
+  res.status(200).json({ status: 'ok', env: config.server.env });
+});
+
+// ── API routes ────────────────────────────────────────────────────────────────
+app.use('/api', hireRoute);
+
+// ── SPA fallback ──────────────────────────────────────────────────────────────
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// ── Global error handler (must be last) ───────────────────────────────────────
+app.use(errorHandler);
+
+// ── Start ─────────────────────────────────────────────────────────────────────
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT} [${config.server.env}]`);
+});

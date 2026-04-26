@@ -4,329 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abhinav Kumar — Senior Salesforce Application Engineer</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --surface-2: #222536;
-      --border: #2e3248;
-      --accent: #4f8ef7;
-      --accent-soft: #1e2d4f;
-      --text: #e8eaf2;
-      --text-secondary: #8b90a8;
-      --text-muted: #555870;
-      --success: #3ecf8e;
-      --tag-bg: #1e2d4f;
-      --tag-text: #7aadff;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /* ── Layout ── */
-    .page {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
-
-    /* ── Header ── */
-    .header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 24px;
-      align-items: start;
-      padding-bottom: 36px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 40px;
-    }
-
-    .header-name {
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: var(--text);
-    }
-
-    .header-title {
-      font-size: 16px;
-      color: var(--accent);
-      font-weight: 500;
-      margin-top: 4px;
-      margin-bottom: 16px;
-    }
-
-    .header-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-
-    .meta-item svg { flex-shrink: 0; }
-
-    .exp-badge {
-      background: var(--accent-soft);
-      border: 1px solid var(--accent);
-      border-radius: 12px;
-      padding: 10px 20px;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .exp-badge .years {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1;
-    }
-
-    .exp-badge .label {
-      font-size: 11px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-top: 4px;
-    }
-
-    /* ── Two-column body ── */
-    .body {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 32px;
-      align-items: start;
-    }
-
-    /* ── Section ── */
-    .section { margin-bottom: 32px; }
-
-    .section-title {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ── About ── */
-    .about-text {
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      line-height: 1.75;
-    }
-
-    /* ── Skills ── */
-    .skill-group { margin-bottom: 14px; }
-
-    .skill-group-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 6px;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .tag {
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      border-radius: 4px;
-      padding: 3px 8px;
-      font-size: 11.5px;
-      font-weight: 500;
-      border: 1px solid #2b3d6b;
-    }
-
-    .tag.green {
-      background: #0d2b1f;
-      color: var(--success);
-      border-color: #1a4a33;
-    }
-
-    /* ── Education ── */
-    .edu-name { font-size: 13px; font-weight: 600; }
-    .edu-degree { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-    .edu-year { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-    /* ── Certifications ── */
-    .cert-group { margin-bottom: 14px; }
-    .cert-group-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 6px;
-    }
-
-    .cert-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 7px;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      margin-bottom: 5px;
-      line-height: 1.4;
-    }
-
-    .cert-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--success);
-      flex-shrink: 0;
-      margin-top: 6px;
-    }
-
-    /* ── Experience ── */
-    .job { margin-bottom: 28px; }
-
-    .job-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-
-    .job-title {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .job-period {
-      font-size: 12px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      margin-top: 2px;
-    }
-
-    .job-company {
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .job-company .location {
-      color: var(--text-muted);
-      font-size: 12px;
-    }
-
-    .job-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .job-bullets li {
-      font-size: 13px;
-      color: var(--text-secondary);
-      padding-left: 14px;
-      position: relative;
-      line-height: 1.55;
-    }
-
-    .job-bullets li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 8px;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    /* ── Projects ── */
-    .project {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 18px;
-      margin-bottom: 14px;
-    }
-
-    .project-title {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .project-tag {
-      display: inline-block;
-      background: #1e2d4f;
-      color: var(--accent);
-      border-radius: 4px;
-      padding: 1px 7px;
-      font-size: 10.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 8px;
-      border: 1px solid #2b3d6b;
-    }
-
-    /* ── Timeline connector ── */
-    .timeline {
-      position: relative;
-    }
-
-    .timeline .job:not(:last-child)::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 16px;
-      background: var(--border);
-      margin-left: 0;
-      margin-top: 0;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 700px) {
-      .body { grid-template-columns: 1fr; }
-      .header { grid-template-columns: 1fr; }
-      .exp-badge { justify-self: start; }
-      .header-name { font-size: 26px; }
-    }
-
-    @media print {
-      body { background: #fff; color: #111; }
-      :root {
-        --bg: #fff; --surface: #f5f5f5; --surface-2: #eee;
-        --border: #ddd; --text: #111; --text-secondary: #444;
-        --text-muted: #888; --accent: #1a56db;
-        --tag-bg: #e8f0fe; --tag-text: #1a56db;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
   <div class="page">
@@ -360,9 +38,13 @@
             <a href="https://trailblazer.me/id/abhinavformula1" target="_blank">Trailblazer Profile</a>
           </span>
         </div>
+        <button class="hire-me-btn" onclick="document.getElementById('hireMeOverlay').removeAttribute('hidden')">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Hire Me
+        </button>
       </div>
       <div class="exp-badge">
-        <div class="years">12+ Year</div>
+        <div class="years">12+ Years</div>
         <div class="label">Years Experience</div>
       </div>
     </header>
@@ -606,5 +288,57 @@
       </main>
     </div>
   </div>
+
+  <!-- ── Hire Me Modal (from Figma: Hire Me — v1.0, node 1-38) ── -->
+  <div id="hireMeOverlay" class="hm-overlay" hidden
+       role="dialog" aria-modal="true" aria-labelledby="hm-title-text">
+    <div class="hm-modal">
+      <button class="hm-close" aria-label="Close"
+              onclick="closeHireMe()">&times;</button>
+
+      <!-- Title (Figma: Inter Bold 20px, #E8EAF0) -->
+      <h2 class="hm-title" id="hm-title-text">Get In Touch</h2>
+
+      <!-- Subtitle (Figma: Inter Bold 13px, #7A8A9E) -->
+      <p class="hm-subtitle">Interested in working together? Fill in your details.</p>
+
+      <form id="hireMeForm" novalidate>
+        <!-- Full Name (Figma: label #C0CDD8, input #111827 / stroke #2E3A50) -->
+        <div class="hm-field">
+          <label for="hm-name">Full Name <span>*</span></label>
+          <input id="hm-name" type="text" placeholder="e.g. Jane Smith" autocomplete="name" />
+          <span class="hm-error" id="hm-name-err"></span>
+        </div>
+
+        <!-- Work Email (Figma: label #C0CDD8) -->
+        <div class="hm-field">
+          <label for="hm-email">Work Email <span>*</span></label>
+          <input id="hm-email" type="email" placeholder="jane@company.com" autocomplete="email" />
+          <span class="hm-error" id="hm-email-err"></span>
+        </div>
+
+        <!-- Company (Figma: label #C0CDD8) -->
+        <div class="hm-field">
+          <label for="hm-company">Company <span>*</span></label>
+          <input id="hm-company" type="text" placeholder="e.g. Acme Corp" autocomplete="organization" />
+          <span class="hm-error" id="hm-company-err"></span>
+        </div>
+
+        <p class="hm-privacy">Your details are used only to respond to your inquiry. No spam, ever.</p>
+
+        <!-- Send Message button (Figma: 416×44, #0070D2, radius 6px, Inter Bold 13px) -->
+        <button class="hm-submit" id="hm-submit-btn" type="submit">Send Message</button>
+
+        <div class="hm-global-error" id="hm-global-error" hidden></div>
+      </form>
+
+      <div class="hm-success" id="hm-success" hidden>
+        ✓ Message sent! I'll be in touch soon.
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/main.js" defer></script>
+
 </body>
 </html>
