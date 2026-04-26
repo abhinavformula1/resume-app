@@ -27,12 +27,31 @@
     if (p && p.type !== 'guest' && p.picture) {
       photo.src = p.picture;
       photo.alt = p.name;
-      name.textContent = p.name.split(' ')[0];
+      if (name) name.textContent = p.name;
       el.removeAttribute('hidden');
     } else {
       el.setAttribute('hidden', '');
     }
   }
+
+  function toggleUserMenu() {
+    var dd = document.getElementById('topbarDropdown');
+    if (!dd) return;
+    if (dd.hasAttribute('hidden')) {
+      dd.removeAttribute('hidden');
+      // Close when clicking outside
+      setTimeout(function () {
+        document.addEventListener('click', closeUserMenu, { once: true });
+      }, 0);
+    } else {
+      dd.setAttribute('hidden', '');
+    }
+  }
+  function closeUserMenu() {
+    var dd = document.getElementById('topbarDropdown');
+    if (dd) dd.setAttribute('hidden', '');
+  }
+  window.toggleUserMenu = toggleUserMenu;
 
   function signOut() {
     saveSiteProfile(null);
