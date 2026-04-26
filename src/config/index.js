@@ -41,6 +41,10 @@ const config = {
     windowMs: 60 * 60 * 1000, // 1 hour
     max:      10,
   },
+
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY || '',
+  },
 };
 
 module.exports = config;
