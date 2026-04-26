@@ -23,7 +23,7 @@ Write exactly 2 concise professional sentences confirming the meeting and summar
 No filler phrases, no emojis, no bullet points. Plain text only.`;
 
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${config.gemini.apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${config.gemini.apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
