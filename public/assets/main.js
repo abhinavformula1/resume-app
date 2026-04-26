@@ -8,6 +8,16 @@
   ─────────────────────────────────────────────────────────── */
   var GOOGLE_CLIENT_ID = '647206478056-rd95imm61c309o4tc5ekddgkmk50fdvp.apps.googleusercontent.com';
 
+  // Persisted site-level profile (survives tab session)
+  var siteProfile = (function () {
+    try { return JSON.parse(sessionStorage.getItem('portfolio_profile') || 'null'); } catch (_) { return null; }
+  }());
+
+  function saveSiteProfile(p) {
+    siteProfile = p;
+    try { sessionStorage.setItem('portfolio_profile', JSON.stringify(p)); } catch (_) {}
+  }
+
   function initGoogleSignIn() {
     if (!GOOGLE_CLIENT_ID || !window.google) return;
     google.accounts.id.initialize({
@@ -16,37 +26,70 @@
       auto_select: false,
       cancel_on_tap_outside: false,
     });
+    // Render button in welcome overlay if shown
+    var welcomeBtn = document.getElementById('welcomeGoogleBtn');
+    if (welcomeBtn && welcomeBtn.childElementCount === 0) {
+      google.accounts.id.renderButton(welcomeBtn, {
+        theme: 'filled_black', size: 'large', text: 'continue_with',
+        shape: 'rectangular', width: 280,
+      });
+    }
+  }
+
+  function showWelcomeOverlay() {
+    var overlay = document.getElementById('welcomeOverlay');
+    if (!overlay) return;
+    overlay.removeAttribute('hidden');
+    // Render Google button once GIS loads
+    if (window.google && window.google.accounts) {
+      initGoogleSignIn();
+    }
+  }
+
+  function hideWelcomeOverlay() {
+    var overlay = document.getElementById('welcomeOverlay');
+    if (overlay) overlay.setAttribute('hidden', '');
   }
 
   function handleGoogleSignIn(response) {
     try {
       var payload = JSON.parse(atob(response.credential.split('.')[1]));
-      state.googleProfile = { name: payload.name, email: payload.email, picture: payload.picture };
-      state.answers.name  = payload.name;
-      state.answers.email = payload.email;
-      state.showGoogleStep = false;
+      var profile = { name: payload.name, email: payload.email, picture: payload.picture };
+      saveSiteProfile(profile);
 
-      // Swap avatar to Google profile picture
-      var avatar = document.querySelector('.ga-avatar');
-      if (avatar && payload.picture) {
-        avatar.innerHTML = '<img src="' + payload.picture + '" alt="' + payload.name + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
-        avatar.style.background = 'none';
-        avatar.style.padding = '0';
+      // Close welcome overlay if open
+      hideWelcomeOverlay();
+
+      // If chat is currently open, apply profile to it
+      var chatOpen = !document.getElementById('assistantOverlay').hasAttribute('hidden');
+      if (chatOpen) {
+        applyGoogleProfileToChat(profile);
       }
-      // Update header name to show who is signed in
-      var headerName = document.querySelector('.ga-header-name');
-      if (headerName) headerName.textContent = payload.name.split(' ')[0] + "'s session";
-
-      // Skip name + email steps — jump straight to company (step 2)
-      state.step = 2;
-      document.getElementById('gaMessages').innerHTML = '';
-      var first = payload.name.split(' ')[0];
-      addBotMessage('Welcome, ' + first + '! I have your details from Google. Just a few more questions.');
-      renderStep();
     } catch (e) {
-      state.showGoogleStep = false;
-      renderStep();
+      hideWelcomeOverlay();
     }
+  }
+
+  function applyGoogleProfileToChat(profile) {
+    state.googleProfile  = profile;
+    state.answers.name   = profile.name;
+    state.answers.email  = profile.email;
+    state.showGoogleStep = false;
+
+    var avatar = document.querySelector('.ga-avatar');
+    if (avatar && profile.picture) {
+      avatar.innerHTML = '<img src="' + profile.picture + '" alt="' + profile.name + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+      avatar.style.background = 'none';
+      avatar.style.padding = '0';
+    }
+    var headerName = document.querySelector('.ga-header-name');
+    if (headerName) headerName.textContent = profile.name.split(' ')[0] + "'s session";
+
+    state.step = 2;
+    document.getElementById('gaMessages').innerHTML = '';
+    var first = profile.name.split(' ')[0];
+    addBotMessage('Welcome, ' + first + '! I have your details from Google. Just a few more questions.');
+    renderStep();
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -214,6 +257,17 @@
   /* ── Chat Launcher ── */
   var teaserShown = false;
 
+  // Show welcome overlay on first visit (unless session already set)
+  if (!siteProfile) {
+    showWelcomeOverlay();
+  }
+
+  // Guest button on welcome overlay
+  document.getElementById('welcomeGuestBtn').addEventListener('click', function () {
+    saveSiteProfile({ type: 'guest' });
+    hideWelcomeOverlay();
+  });
+
   // Init Google Sign-In once the GIS library has loaded
   if (GOOGLE_CLIENT_ID) {
     var _gsiPoll = setInterval(function () {
@@ -223,6 +277,34 @@
       }
     }, 200);
   }
+
+  // ── Resizable chat panel ──────────────────────────────────────
+  (function () {
+    var handle  = document.getElementById('gaResizeHandle');
+    var overlay = document.getElementById('assistantOverlay');
+    if (!handle || !overlay) return;
+    var dragging = false, startX, startW;
+
+    handle.addEventListener('mousedown', function (e) {
+      dragging = true;
+      startX = e.clientX;
+      startW = overlay.offsetWidth;
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'ew-resize';
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      var newW = Math.min(680, Math.max(300, startW + (startX - e.clientX)));
+      overlay.style.width = newW + 'px';
+    });
+    document.addEventListener('mouseup', function () {
+      if (!dragging) return;
+      dragging = false;
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    });
+  }());
 
   setTimeout(function () {
     var launcher = document.getElementById('chatLauncher');
@@ -274,7 +356,7 @@
     state.step = 0;
     state.answers  = { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' };
     state.googleProfile  = null;
-    state.showGoogleStep = !!(GOOGLE_CLIENT_ID && window.google);
+    state.showGoogleStep = false;
     // Reset avatar and header
     var avatar = document.querySelector('.ga-avatar');
     if (avatar) { avatar.innerHTML = 'AK'; avatar.style.background = ''; avatar.style.padding = ''; }
@@ -283,7 +365,13 @@
     document.getElementById('gaMessages').innerHTML = '';
     document.getElementById('assistantOverlay').removeAttribute('hidden');
     hideTeaser();
-    renderStep();
+    // If already signed in from welcome screen, skip sign-in step
+    if (siteProfile && siteProfile.type !== 'guest') {
+      applyGoogleProfileToChat(siteProfile);
+    } else {
+      state.showGoogleStep = !!(GOOGLE_CLIENT_ID && window.google && (!siteProfile));
+      renderStep();
+    }
   }
   window.openAssistant = openAssistant;
 
