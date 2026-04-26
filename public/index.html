@@ -38,7 +38,7 @@
             <a href="https://trailblazer.me/id/abhinavformula1" target="_blank">Trailblazer Profile</a>
           </span>
         </div>
-        <button class="hire-me-btn" onclick="document.getElementById('hireMeOverlay').removeAttribute('hidden')">
+        <button class="hire-me-btn" onclick="openAssistant()">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           Get In Touch
         </button>
@@ -335,6 +335,36 @@
       <div class="hm-success" id="hm-success" hidden>
         ✓ Message sent! I'll be in touch soon.
       </div>
+    </div>
+  </div>
+
+  <!-- ── Guided Assistant Overlay ── -->
+  <div id="assistantOverlay" class="ga-overlay" hidden role="dialog" aria-modal="true" aria-label="Schedule a conversation">
+    <div class="ga-modal">
+
+      <!-- Header -->
+      <div class="ga-header">
+        <div class="ga-avatar">AK</div>
+        <div class="ga-header-info">
+          <div class="ga-header-name">Abhinav's Assistant</div>
+          <div class="ga-header-status">
+            <span class="ga-status-dot"></span> Online
+          </div>
+        </div>
+        <button class="ga-close" onclick="closeAssistant()" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="ga-progress-track">
+        <div class="ga-progress-bar" id="gaProgressBar"></div>
+      </div>
+
+      <!-- Messages -->
+      <div class="ga-messages" id="gaMessages"></div>
+
+      <!-- Input area (dynamically rendered) -->
+      <div class="ga-input-area" id="gaInputArea"></div>
+
     </div>
   </div>
 
