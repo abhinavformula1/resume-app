@@ -7,6 +7,25 @@
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
+
+  <!-- ── Welcome / Login Overlay ── -->
+  <div id="welcomeOverlay" class="welcome-overlay" hidden>
+    <div class="welcome-card">
+      <div class="welcome-brand">
+        <div class="welcome-avatar">AK</div>
+        <div>
+          <div class="welcome-title">Abhinav's Portfolio</div>
+          <div class="welcome-sub">Senior Salesforce Application Engineer</div>
+        </div>
+      </div>
+      <p class="welcome-desc">Sign in with Google for a personalised experience, or continue as a guest.</p>
+      <div id="welcomeGoogleBtn" class="welcome-google-wrap"></div>
+      <div class="welcome-sep"><span>or</span></div>
+      <button class="welcome-guest-btn" id="welcomeGuestBtn">Continue as Guest</button>
+      <p class="welcome-note">Your details are only used to personalise the scheduling assistant.</p>
+    </div>
+  </div>
+
   <!-- ── Top bar ── -->
   <div class="topbar">
     <div class="topbar-inner">
@@ -410,6 +429,7 @@
   <!-- ── Guided Assistant Overlay ── -->
   <div id="assistantOverlay" class="ga-overlay" hidden role="dialog" aria-modal="true" aria-label="Schedule a conversation">
     <div class="ga-modal">
+      <div class="ga-resize-handle" id="gaResizeHandle" title="Drag to resize"></div>
 
       <!-- Header -->
       <div class="ga-header">
