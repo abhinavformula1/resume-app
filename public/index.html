@@ -51,7 +51,7 @@
     <header class="header">
       <div>
         <div class="header-name">Abhinav Kumar</div>
-        <div class="header-title">Senior Salesforce Application Engineer</div>
+        <div class="header-title" data-i18n="headerTitle">Senior Salesforce Application Engineer</div>
         <div class="header-meta">
           <span class="meta-item">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M16 2v4M8 2v4M4 10h16"/></svg>
@@ -78,12 +78,12 @@
         </div>
         <button class="hire-me-btn" onclick="document.getElementById('hireMeOverlay').removeAttribute('hidden')">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Get In Touch
+          <span data-i18n="getInTouch">Get In Touch</span>
         </button>
       </div>
       <div class="exp-badge">
-        <div class="years">12+ Years</div>
-        <div class="label">Years Experience</div>
+        <div class="years">12+</div>
+        <div class="label" data-i18n="yearsExp">Years Experience</div>
       </div>
     </header>
 
@@ -95,22 +95,22 @@
 
         <!-- About -->
         <div class="section">
-          <div class="section-title">About Me</div>
-          <p class="about-text">
+          <div class="section-title" data-i18n="aboutMe">About Me</div>
+          <p class="about-text" data-i18n-html="about1">
             Senior Salesforce Application Engineer with <strong style="color:var(--text)">12+ years of experience</strong> across Salesforce development, architecture, and DevOps, building scalable enterprise applications using Apex, Lightning Web Components, and API-driven integrations.
           </p>
           <br/>
-          <p class="about-text">
+          <p class="about-text" data-i18n="about2">
             Experienced across Sales Cloud, Service Cloud, Experience Cloud, and Salesforce Communications Cloud, with deep expertise in CPQ, Contract Lifecycle Management, and Order Management.
           </p>
         </div>
 
         <!-- Skills -->
         <div class="section">
-          <div class="section-title">Skills</div>
+          <div class="section-title" data-i18n="skills">Skills</div>
 
           <div class="skill-group">
-            <div class="skill-group-label">Salesforce Core</div>
+            <div class="skill-group-label" data-i18n="skillCore">Salesforce Core</div>
             <div class="tags">
               <span class="tag">Apex</span>
               <span class="tag">LWC</span>
@@ -174,16 +174,16 @@
 
         <!-- Education -->
         <div class="section">
-          <div class="section-title">Education</div>
+          <div class="section-title" data-i18n="education">Education</div>
           <div class="edu-name">Medicaps Institute of Technology &amp; Management</div>
-          <div class="edu-degree">Bachelor of Engineering (B.E.)</div>
+          <div class="edu-degree" data-i18n="degree">Bachelor of Engineering (B.E.)</div>
           <div class="edu-degree">Indore, Madhya Pradesh</div>
-          <div class="edu-year">Graduated 2012</div>
+          <div class="edu-year" data-i18n="graduated">Graduated 2012</div>
         </div>
 
         <!-- Certifications -->
         <div class="section">
-          <div class="section-title">Certifications</div>
+          <div class="section-title" data-i18n="certifications">Certifications</div>
 
           <div class="cert-group">
             <div class="cert-group-title">Architecture</div>
@@ -227,7 +227,7 @@
 
         <!-- Work Experience -->
         <div class="section">
-          <div class="section-title">Work Experience</div>
+          <div class="section-title" data-i18n="workExp">Work Experience</div>
           <div class="timeline">
 
             <div class="job">
@@ -236,13 +236,7 @@
                 <div class="job-period">June 2022 – Present</div>
               </div>
               <div class="job-company">Salesforce <span class="location">· India</span></div>
-              <ul class="job-bullets">
-                <li>Designed and developed scalable Salesforce applications using Apex, LWC, Flows, and event-driven automation to support enterprise customer service workflows.</li>
-                <li>Implemented Salesforce Industries (Communications Cloud) solutions across CPQ and Order Management, designing order decomposition and orchestration flows integrated with external billing systems.</li>
-                <li>Developed and supported Experience Cloud portals with custom components, access models, and performance optimizations.</li>
-                <li>Built and maintained API-driven integrations using REST services and Platform Events for reliable communication between Salesforce and downstream systems.</li>
-                <li>Leveraged AI-assisted development tools (Cursor) to accelerate development cycles, improve code quality, and reduce implementation time.</li>
-              </ul>
+              <ul class="job-bullets" data-i18n-list="job1"></ul>
             </div>
 
             <div class="job">
@@ -251,13 +245,7 @@
                 <div class="job-period">Apr 2017 – June 2022</div>
               </div>
               <div class="job-company">Tata Consultancy Services (TCS) <span class="location">· India, Malaysia</span></div>
-              <ul class="job-bullets">
-                <li>Designed and implemented enterprise CPQ and CLM solutions using Conga (Apttus), consolidating multiple legacy back-office systems for product sales, pricing, billing, and contract management.</li>
-                <li>Architected product configuration and pricing models supporting complex bundle structures, multi-currency pricing, approval workflows, and automated deal guidance.</li>
-                <li>Developed scalable customizations using Apex, LWC, and asynchronous Apex (Batch, Queueable, Scheduled) to support high-volume business operations.</li>
-                <li>Managed CI/CD processes using Bitbucket and Jenkins, supporting code reviews, pull requests, and controlled deployments across environments.</li>
-                <li>Led product, approval, and template migrations using X-Author tools and Talend-based data integration workflows ensuring data consistency.</li>
-              </ul>
+              <ul class="job-bullets" data-i18n-list="job2"></ul>
             </div>
 
             <div class="job">
@@ -266,10 +254,7 @@
                 <div class="job-period">May 2016 – Apr 2017</div>
               </div>
               <div class="job-company">Cognizant <span class="location">· India</span></div>
-              <ul class="job-bullets">
-                <li>Developed Salesforce-based onboarding solutions integrating capture, decisioning, and fulfillment workflows for banking onboarding processes.</li>
-                <li>Built API-based integrations between Salesforce and downstream banking systems enabling seamless data exchange across onboarding and servicing platforms.</li>
-              </ul>
+              <ul class="job-bullets" data-i18n-list="job3"></ul>
             </div>
 
             <div class="job">
@@ -278,10 +263,7 @@
                 <div class="job-period">July 2013 – Apr 2016</div>
               </div>
               <div class="job-company">Mindtree <span class="location">· India</span></div>
-              <ul class="job-bullets">
-                <li>Developed and enhanced Salesforce CRM solutions supporting customer service workflows for game purchase and support-related inquiries.</li>
-                <li>Implemented automation and customizations using Apex, Visualforce, and workflow automation to improve case management efficiency.</li>
-              </ul>
+              <ul class="job-bullets" data-i18n-list="job4"></ul>
             </div>
 
           </div>
@@ -289,36 +271,24 @@
 
         <!-- Projects -->
         <div class="section">
-          <div class="section-title">Key Projects</div>
+          <div class="section-title" data-i18n="keyProjects">Key Projects</div>
 
           <div class="project">
             <div class="project-tag">Communications Cloud · OM</div>
             <div class="project-title">PLDT — Order Management</div>
-            <ul class="job-bullets">
-              <li>Designed order orchestration and decomposition workflows using Salesforce Industries Order Management to manage product packaging and order processing.</li>
-              <li>Designed and implemented integrations between Salesforce OM and external billing systems, enabling automated technical product processing and downstream fulfillment.</li>
-              <li>Developed orchestration logic supporting end-to-end order lifecycle processing through API-based integrations.</li>
-            </ul>
+            <ul class="job-bullets" data-i18n-list="proj1"></ul>
           </div>
 
           <div class="project">
             <div class="project-tag">Communications Cloud · CPQ</div>
             <div class="project-title">T-Mobile — CPQ &amp; Contract Lifecycle</div>
-            <ul class="job-bullets">
-              <li>Implemented CPQ and contract lifecycle workflows using Salesforce Industries CPQ, enabling automated contract generation and eSignature processing.</li>
-              <li>Configured document templates and data mappings using OmniStudio Integration Procedures and DataRaptors to support contract automation.</li>
-              <li>Supported deployment and release activities using Copado across multiple environments.</li>
-            </ul>
+            <ul class="job-bullets" data-i18n-list="proj2"></ul>
           </div>
 
           <div class="project">
             <div class="project-tag">Communications Cloud · CPQ</div>
             <div class="project-title">Vodafone — Communications Cloud CPQ</div>
-            <ul class="job-bullets">
-              <li>Developed quoting workflows using OmniScripts, FlexCards, DataRaptors, and Integration Procedures within Salesforce Industries CPQ.</li>
-              <li>Implemented multi-language support using Translation Workbench for global users.</li>
-              <li>Managed product configuration deployments using IDX tools ensuring consistency across environments.</li>
-            </ul>
+            <ul class="job-bullets" data-i18n-list="proj3"></ul>
           </div>
 
         </div>
