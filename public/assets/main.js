@@ -58,11 +58,15 @@
     try { sessionStorage.removeItem('portfolio_profile'); } catch (_) {}
     siteProfile = null;
     updateTopbarUser(null);
-    // Revoke Google token if available
+    closeUserMenu();
     if (window.google && window.google.accounts) {
       google.accounts.id.disableAutoSelect();
     }
-    showWelcomeOverlay();
+    // Only show welcome overlay if chat is not mid-conversation
+    var chatOpen = !document.getElementById('assistantOverlay').hasAttribute('hidden');
+    if (!chatOpen || state.step <= 1) {
+      showWelcomeOverlay();
+    }
   }
   window.signOut = signOut;
 
@@ -124,6 +128,7 @@
     state.answers.email  = profile.email;
     state.showGoogleStep = false;
 
+    // Always update the avatar and header name
     var avatar = document.querySelector('.ga-avatar');
     if (avatar && profile.picture) {
       avatar.innerHTML = '<img src="' + profile.picture + '" alt="' + profile.name + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
@@ -133,11 +138,15 @@
     var headerName = document.querySelector('.ga-header-name');
     if (headerName) headerName.textContent = profile.name.split(' ')[0] + "'s session";
 
-    state.step = 2;
-    document.getElementById('gaMessages').innerHTML = '';
-    var first = profile.name.split(' ')[0];
-    addBotMessage('Welcome, ' + first + '! I have your details from Google. Just a few more questions.');
-    renderStep();
+    // Only restart the chat if we're still at the very beginning (pre-step or name/email)
+    if (state.step <= 1) {
+      state.step = 2;
+      document.getElementById('gaMessages').innerHTML = '';
+      var first = profile.name.split(' ')[0];
+      addBotMessage('Welcome, ' + first + '! I have your details from Google. Just a few more questions.');
+      renderStep();
+    }
+    // If already mid-conversation, just silently update name/email in answers — don't disrupt
   }
 
   /* ═══════════════════════════════════════════════════════════
