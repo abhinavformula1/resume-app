@@ -16,7 +16,36 @@
   function saveSiteProfile(p) {
     siteProfile = p;
     try { sessionStorage.setItem('portfolio_profile', JSON.stringify(p)); } catch (_) {}
+    updateTopbarUser(p);
   }
+
+  function updateTopbarUser(p) {
+    var el    = document.getElementById('topbarUser');
+    var photo = document.getElementById('topbarUserPhoto');
+    var name  = document.getElementById('topbarUserName');
+    if (!el) return;
+    if (p && p.type !== 'guest' && p.picture) {
+      photo.src = p.picture;
+      photo.alt = p.name;
+      name.textContent = p.name.split(' ')[0];
+      el.removeAttribute('hidden');
+    } else {
+      el.setAttribute('hidden', '');
+    }
+  }
+
+  function signOut() {
+    saveSiteProfile(null);
+    try { sessionStorage.removeItem('portfolio_profile'); } catch (_) {}
+    siteProfile = null;
+    updateTopbarUser(null);
+    // Revoke Google token if available
+    if (window.google && window.google.accounts) {
+      google.accounts.id.disableAutoSelect();
+    }
+    showWelcomeOverlay();
+  }
+  window.signOut = signOut;
 
   function initGoogleSignIn() {
     if (!GOOGLE_CLIENT_ID || !window.google) return;
@@ -234,6 +263,82 @@
     },
   };
 
+  /* ── Page-level translations ─────────────────────────────── */
+  var PAGE_LANG = {
+    en: {
+      headerTitle: 'Senior Salesforce Application Engineer',
+      getInTouch: 'Get In Touch',
+      yearsExp: 'Years Experience',
+      aboutMe: 'About Me',
+      about1: 'Senior Salesforce Application Engineer with <strong style="color:var(--text)">12+ years of experience</strong> across Salesforce development, architecture, and DevOps, building scalable enterprise applications using Apex, Lightning Web Components, and API-driven integrations.',
+      about2: 'Experienced across Sales Cloud, Service Cloud, Experience Cloud, and Salesforce Communications Cloud, with deep expertise in CPQ, Contract Lifecycle Management, and Order Management.',
+      skills: 'Skills',
+      skillCore: 'Salesforce Core',
+      education: 'Education',
+      degree: 'Bachelor of Engineering (B.E.)',
+      graduated: 'Graduated 2012',
+      certifications: 'Certifications',
+      workExp: 'Work Experience',
+      keyProjects: 'Key Projects',
+      job1: ['Designed and developed scalable Salesforce applications using Apex, LWC, Flows, and event-driven automation to support enterprise customer service workflows.', 'Implemented Salesforce Industries (Communications Cloud) solutions across CPQ and Order Management, designing order decomposition and orchestration flows integrated with external billing systems.', 'Developed and supported Experience Cloud portals with custom components, access models, and performance optimizations.', 'Built and maintained API-driven integrations using REST services and Platform Events for reliable communication between Salesforce and downstream systems.', 'Leveraged AI-assisted development tools (Cursor) to accelerate development cycles, improve code quality, and reduce implementation time.'],
+      job2: ['Designed and implemented enterprise CPQ and CLM solutions using Conga (Apttus), consolidating multiple legacy back-office systems for product sales, pricing, billing, and contract management.', 'Architected product configuration and pricing models supporting complex bundle structures, multi-currency pricing, approval workflows, and automated deal guidance.', 'Developed scalable customizations using Apex, LWC, and asynchronous Apex (Batch, Queueable, Scheduled) to support high-volume business operations.', 'Managed CI/CD processes using Bitbucket and Jenkins, supporting code reviews, pull requests, and controlled deployments across environments.', 'Led product, approval, and template migrations using X-Author tools and Talend-based data integration workflows ensuring data consistency.'],
+      job3: ['Developed Salesforce-based onboarding solutions integrating capture, decisioning, and fulfillment workflows for banking onboarding processes.', 'Built API-based integrations between Salesforce and downstream banking systems enabling seamless data exchange across onboarding and servicing platforms.'],
+      job4: ['Developed and enhanced Salesforce CRM solutions supporting customer service workflows for game purchase and support-related inquiries.', 'Implemented automation and customizations using Apex, Visualforce, and workflow automation to improve case management efficiency.'],
+      proj1: ['Designed order orchestration and decomposition workflows using Salesforce Industries Order Management to manage product packaging and order processing.', 'Designed and implemented integrations between Salesforce OM and external billing systems, enabling automated technical product processing and downstream fulfillment.', 'Developed orchestration logic supporting end-to-end order lifecycle processing through API-based integrations.'],
+      proj2: ['Implemented CPQ and contract lifecycle workflows using Salesforce Industries CPQ, enabling automated contract generation and eSignature processing.', 'Configured document templates and data mappings using OmniStudio Integration Procedures and DataRaptors to support contract automation.', 'Supported deployment and release activities using Copado across multiple environments.'],
+      proj3: ['Developed quoting workflows using OmniScripts, FlexCards, DataRaptors, and Integration Procedures within Salesforce Industries CPQ.', 'Implemented multi-language support using Translation Workbench for global users.', 'Managed product configuration deployments using IDX tools ensuring consistency across environments.'],
+    },
+    fr: {
+      headerTitle: 'Ingénieur Senior en Applications Salesforce',
+      getInTouch: 'Me Contacter',
+      yearsExp: "Ans d'Expérience",
+      aboutMe: 'À Propos',
+      about1: 'Ingénieur Senior en Applications Salesforce avec <strong style="color:var(--text)">plus de 12 ans d\'expérience</strong> en développement, architecture et DevOps Salesforce, spécialisé dans la création d\'applications d\'entreprise évolutives avec Apex, Lightning Web Components et des intégrations API.',
+      about2: 'Expérimenté sur Sales Cloud, Service Cloud, Experience Cloud et Salesforce Communications Cloud, avec une expertise approfondie en CPQ, gestion du cycle de vie des contrats et gestion des commandes.',
+      skills: 'Compétences',
+      skillCore: 'Salesforce Core',
+      education: 'Formation',
+      degree: 'Licence en Ingénierie (B.E.)',
+      graduated: 'Diplômé en 2012',
+      certifications: 'Certifications',
+      workExp: 'Expérience Professionnelle',
+      keyProjects: 'Projets Clés',
+      job1: ["Conception et développement d'applications Salesforce évolutives avec Apex, LWC, Flows et l'automatisation pilotée par événements pour les flux de travail de service client.", "Mise en œuvre de Salesforce Industries (Communications Cloud) sur CPQ et Order Management, conception de flux d'orchestration intégrés aux systèmes de facturation externes.", "Développement et support de portails Experience Cloud avec composants personnalisés, modèles d'accès et optimisations de performance.", "Création et maintenance d'intégrations API avec REST et Platform Events pour la communication entre Salesforce et les systèmes downstream.", "Utilisation d'outils de développement assistés par IA (Cursor) pour accélérer les cycles de développement et améliorer la qualité du code."],
+      job2: ["Conception et implémentation de solutions CPQ et CLM d'entreprise avec Conga (Apttus), consolidant plusieurs systèmes back-office pour les ventes, la tarification et la gestion des contrats.", "Architecture de modèles de configuration de produits et de tarification supportant des structures de bundles complexes, la tarification multi-devises et les flux d'approbation.", "Développement de personnalisations évolutives avec Apex, LWC et Apex asynchrone (Batch, Queueable, Scheduled) pour les opérations à haut volume.", "Gestion des processus CI/CD avec Bitbucket et Jenkins, supportant les revues de code et les déploiements contrôlés.", "Pilotage des migrations de produits, d'approbations et de modèles avec les outils X-Author et les workflows d'intégration Talend."],
+      job3: ["Développement de solutions d'onboarding Salesforce intégrant la capture, la prise de décision et les flux d'exécution pour les processus d'intégration bancaire.", "Création d'intégrations API entre Salesforce et les systèmes bancaires downstream pour un échange de données fluide."],
+      job4: ["Développement et amélioration de solutions CRM Salesforce pour les flux de service client liés aux achats de jeux.", "Implémentation de l'automatisation et des personnalisations avec Apex, Visualforce et l'automatisation des workflows pour améliorer la gestion des cas."],
+      proj1: ["Conception des flux d'orchestration et de décomposition des commandes avec Salesforce Industries Order Management.", "Conception et implémentation des intégrations entre Salesforce OM et les systèmes de facturation externes.", "Développement de la logique d'orchestration supportant le cycle de vie complet des commandes via des intégrations API."],
+      proj2: ["Implémentation des flux CPQ et de cycle de vie des contrats avec Salesforce Industries CPQ, permettant la génération automatisée de contrats et la signature électronique.", "Configuration des modèles de documents et des mappings de données avec OmniStudio Integration Procedures et DataRaptors.", "Support des activités de déploiement et de mise en production avec Copado sur plusieurs environnements."],
+      proj3: ["Développement des flux de devis avec OmniScripts, FlexCards, DataRaptors et Integration Procedures dans Salesforce Industries CPQ.", "Implémentation du support multilingue avec Translation Workbench pour les utilisateurs globaux.", "Gestion des déploiements de configuration produit avec les outils IDX pour garantir la cohérence entre les environnements."],
+    },
+  };
+
+  function applyPageLang(lang) {
+    var d = PAGE_LANG[lang] || PAGE_LANG.en;
+    // Simple text replacements
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
+      if (d[key] !== undefined) el.textContent = d[key];
+    });
+    // HTML replacements (for elements with inner tags like <strong>)
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-html');
+      if (d[key] !== undefined) el.innerHTML = d[key];
+    });
+    // List replacements
+    document.querySelectorAll('[data-i18n-list]').forEach(function (ul) {
+      var key = ul.getAttribute('data-i18n-list');
+      if (!d[key]) return;
+      ul.innerHTML = '';
+      d[key].forEach(function (item) {
+        var li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+    });
+    document.documentElement.lang = lang;
+  }
+
   var currentLang = 'en';
   function t() { return LANG[currentLang]; }
 
@@ -241,6 +346,8 @@
     currentLang = lang;
     document.getElementById('langEN').classList.toggle('lang-active', lang === 'en');
     document.getElementById('langFR').classList.toggle('lang-active', lang === 'fr');
+    // Update page content
+    applyPageLang(lang);
     // Update teaser bubble text
     var teaserText = document.querySelector('.chat-teaser-text');
     var teaserCta  = document.querySelector('.chat-teaser-cta');
@@ -257,8 +364,13 @@
   /* ── Chat Launcher ── */
   var teaserShown = false;
 
-  // Show welcome overlay on first visit (unless session already set)
-  if (!siteProfile) {
+  // Populate page content in default language on load
+  applyPageLang('en');
+
+  // Restore topbar user if session exists
+  if (siteProfile) {
+    updateTopbarUser(siteProfile);
+  } else {
     showWelcomeOverlay();
   }
 

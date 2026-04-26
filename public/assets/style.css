@@ -43,6 +43,36 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.6px;
 }
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+.topbar-user[hidden] { display: none; }
+.topbar-user-photo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+.topbar-user-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.topbar-signout {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.topbar-signout:hover { border-color: var(--accent); color: var(--accent); }
 .lang-toggle {
   display: flex;
   align-items: center;
