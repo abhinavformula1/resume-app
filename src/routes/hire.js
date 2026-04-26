@@ -25,6 +25,12 @@ const validateHire = [
     .trim()
     .notEmpty().withMessage('Company name is required.')
     .isLength({ max: 255 }).withMessage('Company must be 255 characters or fewer.'),
+
+  // Guided assistant fields (optional — not sent by legacy modal)
+  body('role').optional().trim().isLength({ max: 100 }),
+  body('contractType').optional().trim().isLength({ max: 50 }),
+  body('urgency').optional().trim().isLength({ max: 50 }),
+  body('slot').optional().trim().isLength({ max: 100 }),
 ];
 
 // ── POST /api/hire ────────────────────────────────────────────────────────────
@@ -38,11 +44,19 @@ router.post('/hire', hireLimiter, validateHire, async (req, res, next) => {
     ));
   }
 
-  const { name, email, company } = req.body;
+  const { name, email, company, role, contractType, urgency, slot } = req.body;
+
+  // Build a rich description from guided assistant answers (if present)
+  const notes = [
+    role         && `Role: ${role}`,
+    contractType && `Type: ${contractType}`,
+    urgency      && `Urgency: ${urgency}`,
+    slot         && `Requested slot: ${slot}`,
+  ].filter(Boolean).join('\n');
 
   try {
     // 2. Create Salesforce record
-    const { id } = await salesforce.createInquiry({ name, email, company });
+    const { id } = await salesforce.createInquiry({ name, email, company, notes });
 
     return res.status(200).json({
       success:  true,
