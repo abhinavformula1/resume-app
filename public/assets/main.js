@@ -512,7 +512,7 @@
       out.className = 'ga-summary-out ga-summary-err';
       btn.textContent = 'Retry';
       btn.disabled = false;
-      btn.onclick = function () { requestSummary(btn, done); };
+        btn.onclick = function () { requestSummary(btn); };
     }
   }
 

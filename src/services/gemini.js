@@ -29,7 +29,8 @@ No filler phrases, no emojis, no bullet points. Plain text only.`;
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.3, maxOutputTokens: 150 },
+        generationConfig: { temperature: 0.3, maxOutputTokens: 512 },
+        thinkingConfig: { thinkingBudget: 0 },
       }),
     }
   );
