@@ -423,13 +423,85 @@
       function () {
         var done = document.createElement('div');
         done.className = 'ga-done';
-        done.innerHTML =
-          '<div class="ga-done-check">&#10003;</div>' +
-          '<div class="ga-done-slot">' + escHtml(state.answers.slot) + '</div>' +
-          '<button class="ga-done-close" onclick="closeAssistant()">' + t().closeBtn + '</button>';
+
+        var checkEl = document.createElement('div');
+        checkEl.className = 'ga-done-check';
+        checkEl.innerHTML = '&#10003;';
+
+        var slotEl = document.createElement('div');
+        slotEl.className = 'ga-done-slot';
+        slotEl.textContent = state.answers.slot;
+
+        var summaryBtn = document.createElement('button');
+        summaryBtn.className = 'ga-summary-btn';
+        summaryBtn.textContent = 'Get AI Summary';
+        summaryBtn.onclick = function () { requestSummary(summaryBtn, done); };
+
+        var summaryOut = document.createElement('div');
+        summaryOut.className = 'ga-summary-out';
+        summaryOut.id = 'gaSummaryOut';
+
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'ga-done-close';
+        closeBtn.textContent = t().closeBtn;
+        closeBtn.onclick = closeAssistant;
+
+        done.appendChild(checkEl);
+        done.appendChild(slotEl);
+        done.appendChild(summaryBtn);
+        done.appendChild(summaryOut);
+        done.appendChild(closeBtn);
         area.appendChild(done);
       }
     );
+  }
+
+  async function requestSummary(btn, done) {
+    btn.disabled = true;
+    btn.textContent = 'Generating\u2026';
+    var out = document.getElementById('gaSummaryOut');
+    out.textContent = '';
+    out.className = 'ga-summary-out';
+
+    try {
+      var res = await fetch('/api/summarise', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:         state.answers.name,
+          company:      state.answers.company,
+          role:         state.answers.role,
+          contractType: state.answers.contractType,
+          urgency:      state.answers.urgency,
+          slot:         state.answers.slot,
+        }),
+      });
+      var data = await res.json();
+      if (res.ok && data.summary) {
+        out.textContent = data.summary;
+        out.className = 'ga-summary-out ga-summary-ready';
+        btn.textContent = 'Copy Summary';
+        btn.disabled = false;
+        btn.onclick = function () {
+          navigator.clipboard.writeText(data.summary).then(function () {
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = 'Copy Summary'; }, 2000);
+          });
+        };
+      } else {
+        out.textContent = data.error || 'Could not generate summary.';
+        out.className = 'ga-summary-out ga-summary-err';
+        btn.textContent = 'Retry';
+        btn.disabled = false;
+        btn.onclick = function () { requestSummary(btn, done); };
+      }
+    } catch (_) {
+      out.textContent = 'Network error. Please try again.';
+      out.className = 'ga-summary-out ga-summary-err';
+      btn.textContent = 'Retry';
+      btn.disabled = false;
+      btn.onclick = function () { requestSummary(btn, done); };
+    }
   }
 
   function scrollMessages() {
