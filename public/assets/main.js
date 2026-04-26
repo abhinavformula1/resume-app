@@ -70,12 +70,58 @@
     },
   ];
 
+  /* ── Chat Launcher ── */
+  var teaserShown = false;
+
+  setTimeout(function () {
+    var launcher = document.getElementById('chatLauncher');
+    launcher.removeAttribute('hidden');
+    // Show teaser bubble after launcher appears
+    setTimeout(function () {
+      if (!teaserShown) showTeaser();
+    }, 600);
+  }, 5000);
+
+  function showTeaser() {
+    teaserShown = true;
+    var teaser = document.getElementById('chatTeaser');
+    teaser.removeAttribute('hidden');
+    var openIcon  = document.querySelector('.chat-fab-icon-open');
+    var closeIcon = document.querySelector('.chat-fab-icon-close');
+    openIcon.style.display  = 'none';
+    closeIcon.style.display = '';
+  }
+
+  function hideTeaser() {
+    document.getElementById('chatTeaser').setAttribute('hidden', '');
+    var openIcon  = document.querySelector('.chat-fab-icon-open');
+    var closeIcon = document.querySelector('.chat-fab-icon-close');
+    openIcon.style.display  = '';
+    closeIcon.style.display = 'none';
+  }
+
+  function toggleChatTeaser() {
+    var teaser = document.getElementById('chatTeaser');
+    if (teaser.hasAttribute('hidden')) {
+      showTeaser();
+    } else {
+      hideTeaser();
+    }
+  }
+  window.toggleChatTeaser = toggleChatTeaser;
+
+  document.getElementById('chatTeaserClose').addEventListener('click', function (e) {
+    e.stopPropagation();
+    hideTeaser();
+  });
+
   function openAssistant() {
     state.step = 0;
     state.answers = { name: '', email: '', company: '', role: '', contractType: '', urgency: '', slot: '' };
     document.getElementById('gaMessages').innerHTML = '';
     document.getElementById('assistantOverlay').removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
+    hideTeaser();
     renderStep();
   }
   window.openAssistant = openAssistant;
