@@ -29,6 +29,13 @@
   <!-- ── Top bar ── -->
   <div class="topbar">
     <div class="topbar-inner">
+      <!-- Signed-in user (hidden until Google login) -->
+      <div class="topbar-user" id="topbarUser" hidden>
+        <img class="topbar-user-photo" id="topbarUserPhoto" src="" alt="" />
+        <span class="topbar-user-name" id="topbarUserName"></span>
+        <button class="topbar-signout" onclick="signOut()">Sign out</button>
+      </div>
+
       <span class="topbar-label">Language</span>
       <div class="lang-toggle">
         <button class="lang-btn lang-active" id="langEN" onclick="setLang('en')">EN</button>

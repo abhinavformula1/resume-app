@@ -16,7 +16,36 @@
   function saveSiteProfile(p) {
     siteProfile = p;
     try { sessionStorage.setItem('portfolio_profile', JSON.stringify(p)); } catch (_) {}
+    updateTopbarUser(p);
   }
+
+  function updateTopbarUser(p) {
+    var el    = document.getElementById('topbarUser');
+    var photo = document.getElementById('topbarUserPhoto');
+    var name  = document.getElementById('topbarUserName');
+    if (!el) return;
+    if (p && p.type !== 'guest' && p.picture) {
+      photo.src = p.picture;
+      photo.alt = p.name;
+      name.textContent = p.name.split(' ')[0];
+      el.removeAttribute('hidden');
+    } else {
+      el.setAttribute('hidden', '');
+    }
+  }
+
+  function signOut() {
+    saveSiteProfile(null);
+    try { sessionStorage.removeItem('portfolio_profile'); } catch (_) {}
+    siteProfile = null;
+    updateTopbarUser(null);
+    // Revoke Google token if available
+    if (window.google && window.google.accounts) {
+      google.accounts.id.disableAutoSelect();
+    }
+    showWelcomeOverlay();
+  }
+  window.signOut = signOut;
 
   function initGoogleSignIn() {
     if (!GOOGLE_CLIENT_ID || !window.google) return;
@@ -257,8 +286,10 @@
   /* ── Chat Launcher ── */
   var teaserShown = false;
 
-  // Show welcome overlay on first visit (unless session already set)
-  if (!siteProfile) {
+  // Restore topbar user if session exists
+  if (siteProfile) {
+    updateTopbarUser(siteProfile);
+  } else {
     showWelcomeOverlay();
   }
 
