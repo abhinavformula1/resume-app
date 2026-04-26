@@ -13,6 +13,9 @@ const { errorHandler } = require('./src/middleware/errorHandler');
 const app  = express();
 const PORT = config.server.port;
 
+// Trust Cloud Run's load balancer (fixes X-Forwarded-For for rate limiting)
+app.set('trust proxy', 1);
+
 // ── Request parsing ───────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
