@@ -455,6 +455,122 @@ a:hover { text-decoration: underline; }
 }
 
 /* ══════════════════════════════════════════════════════════
+   CHAT LAUNCHER — floating bottom-right
+══════════════════════════════════════════════════════════ */
+
+.chat-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.chat-launcher[hidden] { display: none; }
+
+/* FAB button */
+.chat-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #0070D2;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  position: relative;
+  transition: background 0.2s, transform 0.2s;
+}
+.chat-fab:hover { background: #005fb2; transform: scale(1.06); }
+
+/* ping animation on FAB */
+.chat-fab-ping {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3ecf8e;
+  border: 2px solid #0f1117;
+  animation: ping 2s ease-in-out 5.5s 3;
+}
+@keyframes ping {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.6; }
+}
+
+/* Teaser bubble */
+.chat-teaser {
+  background: #1C2333;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  max-width: 240px;
+  position: relative;
+  animation: teaserIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom right;
+}
+.chat-teaser[hidden] { display: none; }
+
+@keyframes teaserIn {
+  from { opacity: 0; transform: scale(0.7) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.chat-teaser::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background: #1C2333;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transform: rotate(45deg);
+}
+
+.chat-teaser-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+.chat-teaser-close:hover { color: var(--text); }
+
+.chat-teaser-text {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 10px;
+  padding-right: 16px;
+}
+
+.chat-teaser-cta {
+  background: #0070D2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+.chat-teaser-cta:hover { background: #005fb2; }
+
+/* ══════════════════════════════════════════════════════════
    GUIDED ASSISTANT
 ══════════════════════════════════════════════════════════ */
 
