@@ -1,41 +1,21 @@
 'use strict';
 
 const https  = require('https');
-const crypto = require('crypto');
 const config = require('../config');
 const { SalesforceError, SalesforceAuthError } = require('../errors');
 
-// ── Token cache (in-memory) ───────────────────────────────────────────────────
+// ── Token cache (in-memory, reused across requests) ───────────────────────────
 let _tokenCache = null; // { accessToken, instanceUrl, expiresAt }
 const TOKEN_BUFFER_MS = 5 * 60 * 1000; // refresh 5 min before expiry
 
-// ── JWT Builder ───────────────────────────────────────────────────────────────
-function buildJwt() {
-  const { clientId, username, privateKey, loginUrl } = config.salesforce;
-  const header  = Buffer.from(JSON.stringify({ alg: 'RS256' })).toString('base64url');
-  const now     = Math.floor(Date.now() / 1000);
-  const payload = Buffer.from(JSON.stringify({
-    iss: clientId,
-    sub: username,
-    aud: loginUrl,
-    exp: now + 300,
-  })).toString('base64url');
-
-  const signingInput = `${header}.${payload}`;
-  const sign = crypto.createSign('RSA-SHA256');
-  sign.update(signingInput);
-  const signature = sign.sign(privateKey, 'base64url');
-
-  return `${signingInput}.${signature}`;
-}
-
-// ── Token Fetcher ─────────────────────────────────────────────────────────────
+// ── OAuth 2.0 Client Credentials flow ────────────────────────────────────────
 function fetchAccessToken() {
-  const { loginUrl } = config.salesforce;
-  const jwt  = buildJwt();
+  const { clientId, clientSecret, loginUrl } = config.salesforce;
+
   const body = new URLSearchParams({
-    grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-    assertion:  jwt,
+    grant_type:    'client_credentials',
+    client_id:     clientId,
+    client_secret: clientSecret,
   }).toString();
 
   const url = new URL('/services/oauth2/token', loginUrl);
@@ -131,17 +111,20 @@ function sfPost(instanceUrl, accessToken, sobjectPath, payload) {
  * Creates a Recruiter_Inquiry__c record in Salesforce.
  * Retries once on 401 (expired token).
  *
- * @param {{ name: string, email: string, company: string }} data
- * @returns {Promise<{ id: string }>}
+ * Fields on Recruiter_Inquiry__c:
+ *   Full_Name__c       Text(255)  required
+ *   Work_Email__c      Email      required
+ *   Company_Name__c    Text(255)
+ *   Description__c     Text Area  (role, contract type, urgency, slot notes)
  */
 async function createInquiry(data, retry = true) {
   const { accessToken, instanceUrl } = await getToken();
 
   const payload = {
-    Recruiter_Name__c:    data.name,
-    Recruiter_Email__c:   data.email,
-    Recruiter_Company__c: data.company,
-    Submission_Date__c:   new Date().toISOString(),
+    Full_Name__c:    data.name,
+    Work_Email__c:   data.email,
+    Company_Name__c: data.company,
+    Description__c:  data.notes || '',
   };
 
   const { status, data: result } = await sfPost(
@@ -155,11 +138,10 @@ async function createInquiry(data, retry = true) {
 
   if (status !== 201) {
     const msg = Array.isArray(result) ? result[0]?.message : JSON.stringify(result);
-    throw new SalesforceError(
-      `Record creation failed (HTTP ${status})`, msg
-    );
+    throw new SalesforceError(`Record creation failed (HTTP ${status})`, msg);
   }
 
+  console.log(`[salesforce] Recruiter_Inquiry__c created: ${result.id}`);
   return { id: result.id };
 }
 
