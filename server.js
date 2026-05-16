@@ -6,8 +6,9 @@ require('dotenv').config();
 const express      = require('express');
 const path         = require('path');
 const config       = require('./src/config');
-const hireRoute      = require('./src/routes/hire');
-const summariseRoute = require('./src/routes/summarise');
+const hireRoute       = require('./src/routes/hire');
+const summariseRoute  = require('./src/routes/summarise');
+const salesforceRoute = require('./src/routes/salesforce');
 const { errorHandler } = require('./src/middleware/errorHandler');
 
 const app  = express();
@@ -31,6 +32,7 @@ app.get('/health', (_req, res) => {
 // ── API routes ────────────────────────────────────────────────────────────────
 app.use('/api', hireRoute);
 app.use('/api', summariseRoute);
+app.use('/api', salesforceRoute);
 
 // ── SPA fallback ──────────────────────────────────────────────────────────────
 app.get('*', (_req, res) => {
