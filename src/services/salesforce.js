@@ -8,14 +8,31 @@ const { SalesforceError, SalesforceAuthError } = require('../errors');
 let _tokenCache = null; // { accessToken, instanceUrl, expiresAt }
 const TOKEN_BUFFER_MS = 5 * 60 * 1000; // refresh 5 min before expiry
 
-// ── OAuth 2.0 Client Credentials flow ────────────────────────────────────────
+// ── JWT Bearer Token flow ─────────────────────────────────────────────────────
+function buildJwt() {
+  const { clientId, username, privateKey, loginUrl } = config.salesforce;
+  const header  = Buffer.from(JSON.stringify({ alg: 'RS256' })).toString('base64url');
+  const now     = Math.floor(Date.now() / 1000);
+  const payload = Buffer.from(JSON.stringify({
+    iss: clientId,
+    sub: username,
+    aud: loginUrl,
+    exp: now + 300,
+  })).toString('base64url');
+
+  const signingInput = `${header}.${payload}`;
+  const sign = require('crypto').createSign('RSA-SHA256');
+  sign.update(signingInput);
+  return `${signingInput}.${sign.sign(privateKey, 'base64url')}`;
+}
+
 function fetchAccessToken() {
-  const { clientId, clientSecret, loginUrl } = config.salesforce;
+  const { loginUrl } = config.salesforce;
+  const jwt  = buildJwt();
 
   const body = new URLSearchParams({
-    grant_type:    'client_credentials',
-    client_id:     clientId,
-    client_secret: clientSecret,
+    grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+    assertion:  jwt,
   }).toString();
 
   const url = new URL('/services/oauth2/token', loginUrl);

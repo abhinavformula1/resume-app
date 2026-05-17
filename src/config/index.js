@@ -29,10 +29,11 @@ const config = {
   },
 
   salesforce: {
-    get clientId()     { return requireEnv('SF_CLIENT_ID'); },
-    get clientSecret() { return requireEnv('SF_CLIENT_SECRET'); },
-    loginUrl:          process.env.SF_LOGIN_URL || 'https://login.salesforce.com',
-    apiVersion:        process.env.SF_API_VERSION || 'v60.0',
+    get clientId()   { return requireEnv('SF_CLIENT_ID'); },
+    get username()   { return requireEnv('SF_USERNAME'); },
+    get privateKey() { return requireEnv('SF_PRIVATE_KEY').replace(/\\n/g, '\n'); },
+    loginUrl:        process.env.SF_LOGIN_URL || 'https://login.salesforce.com',
+    apiVersion:      process.env.SF_API_VERSION || 'v60.0',
   },
 
   rateLimit: {
