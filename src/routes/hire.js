@@ -56,7 +56,7 @@ router.post('/hire', hireLimiter, validateHire, async (req, res, next) => {
 
   try {
     // 2. Create Salesforce record (skip gracefully if SF not configured yet)
-    const sfConfigured = !!(process.env.SF_CLIENT_ID && process.env.SF_CLIENT_SECRET);
+    const sfConfigured = !!(process.env.SF_CLIENT_ID && process.env.SF_USERNAME && process.env.SF_PRIVATE_KEY);
 
     let recordId = null;
     if (sfConfigured) {
